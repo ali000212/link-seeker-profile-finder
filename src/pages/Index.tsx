@@ -14,8 +14,8 @@ const Index = () => {
     
     console.log('Generating profiles with params:', { name, title, country, limit });
     
-    // Simulate search time: 1 second per person
-    const searchTime = limit * 1000;
+    // Simulate search time: 0.2 seconds per person (2s for 10, 4s for 20, etc.)
+    const searchTime = limit * 200;
     await new Promise(resolve => setTimeout(resolve, searchTime));
     
     const generatedProfiles = generateProfiles(name, title, country, limit);
