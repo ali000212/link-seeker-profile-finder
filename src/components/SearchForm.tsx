@@ -8,7 +8,7 @@ import { Search, Loader2 } from 'lucide-react';
 import { countries } from '@/data/countries';
 
 interface SearchFormProps {
-  onSearch: (name: string, title: string, country: string) => void;
+  onSearch: (name: string, title: string, country: string, limit: number) => void;
   isLoading: boolean;
 }
 
@@ -16,17 +16,19 @@ export const SearchForm = ({ onSearch, isLoading }: SearchFormProps) => {
   const [name, setName] = useState('');
   const [title, setTitle] = useState('');
   const [country, setCountry] = useState('');
+  const [limit, setLimit] = useState(10);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSearch(name, title, country);
+    const actualLimit = Math.min(Math.max(1, limit), 50); // Ensure limit is between 1 and 50
+    onSearch(name, title, country, actualLimit);
   };
 
   return (
     <Card className="max-w-4xl mx-auto mb-12 shadow-lg">
       <CardContent className="p-8">
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="space-y-2">
               <label htmlFor="name" className="text-sm font-medium text-gray-700">
                 Name
@@ -72,6 +74,22 @@ export const SearchForm = ({ onSearch, isLoading }: SearchFormProps) => {
                 </SelectContent>
               </Select>
             </div>
+
+            <div className="space-y-2">
+              <label htmlFor="limit" className="text-sm font-medium text-gray-700">
+                Limit (1-50)
+              </label>
+              <Input
+                id="limit"
+                type="number"
+                min="1"
+                max="50"
+                placeholder="10"
+                value={limit}
+                onChange={(e) => setLimit(parseInt(e.target.value) || 10)}
+                className="h-12"
+              />
+            </div>
           </div>
 
           <div className="flex justify-center">
@@ -84,12 +102,12 @@ export const SearchForm = ({ onSearch, isLoading }: SearchFormProps) => {
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Searching...
+                  Generating Profiles...
                 </>
               ) : (
                 <>
                   <Search className="mr-2 h-4 w-4" />
-                  Search Profiles
+                  Generate Profiles
                 </>
               )}
             </Button>

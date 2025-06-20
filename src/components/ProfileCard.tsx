@@ -1,7 +1,7 @@
 
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Building, Users, GraduationCap } from 'lucide-react';
+import { MapPin, Building, Users, GraduationCap, Calendar, Briefcase } from 'lucide-react';
 import { Profile } from '@/types/Profile';
 
 interface ProfileCardProps {
@@ -20,6 +20,13 @@ export const ProfileCard = ({ profile }: ProfileCardProps) => {
             className="w-20 h-20 rounded-full mx-auto mb-3 border-4 border-blue-100 group-hover:border-blue-200 transition-colors"
           />
           <h3 className="font-semibold text-lg text-gray-900 mb-1">{profile.name}</h3>
+          
+          <div className="flex items-center justify-center gap-2 text-sm text-gray-600 mb-2">
+            <span>{profile.age} years old</span>
+            <span>•</span>
+            <span>{profile.gender}</span>
+          </div>
+          
           <p className="text-blue-600 font-medium text-sm mb-2">{profile.title}</p>
           
           <div className="flex items-center justify-center text-gray-600 text-sm mb-2">
@@ -27,9 +34,14 @@ export const ProfileCard = ({ profile }: ProfileCardProps) => {
             {profile.company}
           </div>
           
-          <div className="flex items-center justify-center text-gray-500 text-sm">
+          <div className="flex items-center justify-center text-gray-500 text-sm mb-2">
             <MapPin className="w-4 h-4 mr-1" />
             {profile.city}, {profile.country}
+          </div>
+
+          <div className="flex items-center justify-center text-gray-500 text-sm">
+            <Briefcase className="w-4 h-4 mr-1" />
+            {profile.yearsOfExperience} years experience
           </div>
         </div>
 
@@ -37,6 +49,24 @@ export const ProfileCard = ({ profile }: ProfileCardProps) => {
         <div className="flex items-center justify-center mb-4 text-gray-600">
           <Users className="w-4 h-4 mr-1" />
           <span className="text-sm">{profile.connections.toLocaleString()} connections</span>
+        </div>
+
+        {/* Summary */}
+        <div className="mb-4">
+          <p className="text-xs text-gray-600 line-clamp-3">
+            {profile.summary}
+          </p>
+        </div>
+
+        {/* Current Position */}
+        <div className="mb-4">
+          <div className="flex items-center mb-2 text-gray-700">
+            <Calendar className="w-4 h-4 mr-1" />
+            <span className="text-sm font-medium">Current Position</span>
+          </div>
+          <p className="text-xs text-gray-600">
+            {profile.currentPosition}
+          </p>
         </div>
 
         {/* Education */}
@@ -47,7 +77,7 @@ export const ProfileCard = ({ profile }: ProfileCardProps) => {
               <span className="text-sm font-medium">Education</span>
             </div>
             <div className="space-y-1">
-              {profile.education.slice(0, 2).map((edu, index) => (
+              {profile.education.slice(0, 1).map((edu, index) => (
                 <p key={index} className="text-xs text-gray-600 line-clamp-2">
                   {edu}
                 </p>

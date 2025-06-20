@@ -2,28 +2,26 @@
 import { useState } from 'react';
 import { SearchForm } from '@/components/SearchForm';
 import { ProfileGrid } from '@/components/ProfileGrid';
-import { mockProfiles } from '@/data/mockProfiles';
+import { generateProfiles } from '@/utils/profileGenerator';
 import { Profile } from '@/types/Profile';
 
 const Index = () => {
   const [searchResults, setSearchResults] = useState<Profile[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSearch = async (name: string, title: string, country: string) => {
+  const handleSearch = async (name: string, title: string, country: string, limit: number) => {
     setIsLoading(true);
     
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 800));
+    console.log('Generating profiles with params:', { name, title, country, limit });
     
-    const filteredProfiles = mockProfiles.filter(profile => {
-      const nameMatch = !name || profile.name.toLowerCase().includes(name.toLowerCase());
-      const titleMatch = !title || profile.title.toLowerCase().includes(title.toLowerCase());
-      const countryMatch = !country || profile.country.toLowerCase() === country.toLowerCase();
-      
-      return nameMatch && titleMatch && countryMatch;
-    }).slice(0, 50); // Limit to 50 results
+    // Simulate generation time based on limit
+    const generationTime = Math.min(limit * 50, 2000); // 50ms per profile, max 2 seconds
+    await new Promise(resolve => setTimeout(resolve, generationTime));
     
-    setSearchResults(filteredProfiles);
+    const generatedProfiles = generateProfiles(name, title, country, limit);
+    console.log('Generated profiles:', generatedProfiles.length);
+    
+    setSearchResults(generatedProfiles);
     setIsLoading(false);
   };
 
@@ -33,10 +31,10 @@ const Index = () => {
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            LinkedIn Profile Finder
+            LinkedIn Profile Generator
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Find professional profiles by name, title, and location. Search through thousands of LinkedIn profiles instantly.
+            Generate realistic LinkedIn profiles by name, title, country and limit. Create up to 50 profiles instantly with comprehensive professional data.
           </p>
         </div>
 

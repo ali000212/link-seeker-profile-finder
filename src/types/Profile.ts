@@ -2,6 +2,8 @@
 export interface Profile {
   id: string;
   name: string;
+  age: number;
+  gender: 'Male' | 'Female';
   title: string;
   company: string;
   country: string;
@@ -11,4 +13,8 @@ export interface Profile {
   education: string[];
   skills: string[];
   connections: number;
+  yearsOfExperience: number;
+  currentPosition: string;
+  previousPositions: string[];
+  summary: string;
 }
