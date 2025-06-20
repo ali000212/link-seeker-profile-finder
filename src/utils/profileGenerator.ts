@@ -1,3 +1,4 @@
+
 import { Profile } from '@/types/Profile';
 
 const firstNamesMale = [
@@ -120,28 +121,35 @@ function generateName(searchName: string, gender: 'Male' | 'Female'): string {
 }
 
 function generateEducationBackground(): string[] {
-  const numDegrees = Math.random() < 0.3 ? 1 : Math.random() < 0.7 ? 2 : 3;
+  const numDegrees = Math.random() < 0.2 ? 1 : Math.random() < 0.6 ? 2 : 3;
   const education: string[] = [];
   
   for (let i = 0; i < numDegrees; i++) {
     const degree = getRandomElement(degreeTypes);
     const field = getRandomElement(fieldOfStudy);
     const university = getRandomElement(diverseUniversities);
-    const year = 2024 - Math.floor(Math.random() * 25) - i * 3; // Realistic graduation years
+    const year = 2024 - Math.floor(Math.random() * 25) - i * 3;
     education.push(`${degree} in ${field} - ${university} (${year})`);
   }
   
   return education;
 }
 
-function generateCareerPath(yearsExp: number, currentTitle: string, currentCompany: string): string[] {
+function generateExtensiveCareerPath(yearsExp: number, currentTitle: string, currentCompany: string): string[] {
   const career: string[] = [`${currentTitle} at ${currentCompany}`];
-  const numPrevious = Math.min(yearsExp > 10 ? 4 : yearsExp > 5 ? 3 : yearsExp > 2 ? 2 : 1, 5);
+  const numPrevious = Math.min(Math.max(2, Math.floor(yearsExp / 2)), 8);
+  
+  const usedCompanies = new Set([currentCompany]);
   
   for (let i = 0; i < numPrevious; i++) {
-    const company = getRandomElement(enhancedCompanies.filter(c => c !== currentCompany));
+    const availableCompanies = enhancedCompanies.filter(c => !usedCompanies.has(c));
+    const company = getRandomElement(availableCompanies);
     const title = getRandomElement(enhancedJobTitles);
-    career.push(`${title} at ${company}`);
+    const yearsAgo = 1 + i;
+    const duration = Math.floor(Math.random() * 4) + 1;
+    
+    career.push(`${title} at ${company} (${yearsAgo}-${yearsAgo + duration} years ago)`);
+    usedCompanies.add(company);
   }
   
   return career;
@@ -178,11 +186,11 @@ function generateMatchingProfile(
   const yearsOfExperience = Math.min(Math.floor(Math.random() * (age - 22)), age - 22);
   
   const currentPosition = `${title} at ${company}`;
-  const experience = generateCareerPath(yearsOfExperience, title, company);
+  const experience = generateExtensiveCareerPath(yearsOfExperience, title, company);
   const previousPositions = experience.slice(1);
   
   const education = generateEducationBackground();
-  const skillCount = Math.floor(Math.random() * 8) + 4; // 4-12 skills per person
+  const skillCount = Math.floor(Math.random() * 8) + 3; // 3-10 skills per person
   const personalSkills = getRandomElements(diverseSkills, skillCount);
   
   const summary = generatePersonalizedSummary(name, title, yearsOfExperience, personalSkills);
@@ -196,11 +204,11 @@ function generateMatchingProfile(
     company,
     country,
     city,
-    avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${name.replace(' ', '')}&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf`,
+    avatar: '', // Remove avatar
     experience,
     education,
     skills: personalSkills,
-    connections: Math.floor(Math.random() * 8000) + 500, // 500-8500 connections
+    connections: Math.floor(Math.random() * 8000) + 500,
     yearsOfExperience,
     currentPosition,
     previousPositions,

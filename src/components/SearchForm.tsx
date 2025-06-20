@@ -102,12 +102,12 @@ export const SearchForm = ({ onSearch, isLoading }: SearchFormProps) => {
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Generating Profiles...
+                  Searching Profiles...
                 </>
               ) : (
                 <>
                   <Search className="mr-2 h-4 w-4" />
-                  Generate Profiles
+                  Search
                 </>
               )}
             </Button>
