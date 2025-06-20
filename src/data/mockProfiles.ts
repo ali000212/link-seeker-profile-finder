@@ -87,26 +87,39 @@ function generateRandomProfile(id: string): Profile {
   const city = getRandomElement(cityList);
   const title = getRandomElement(jobTitles);
   const company = getRandomElement(companies);
+  const gender = Math.random() > 0.5 ? 'Male' : 'Female';
+  const age = Math.floor(Math.random() * (65 - 22) + 22);
+  const yearsOfExperience = Math.floor(Math.random() * (age - 22));
+  
+  const currentPosition = `${title} at ${company}`;
+  const previousCompanies = getRandomElements(companies.filter(c => c !== company), 2);
+  const previousPositions = previousCompanies.map(comp => 
+    `${getRandomElement(jobTitles)} at ${comp}`
+  );
+  
+  const summary = `Experienced ${title.toLowerCase()} with ${yearsOfExperience} years of experience in the industry. Passionate about technology and innovation.`;
   
   return {
     id,
     name: `${firstName} ${lastName}`,
+    age,
+    gender,
     title,
     company,
     country,
     city,
     avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${firstName}${lastName}&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf`,
-    experience: [
-      `${title} at ${company}`,
-      `${getRandomElement(jobTitles)} at ${getRandomElement(companies)}`,
-      `${getRandomElement(jobTitles)} at ${getRandomElement(companies)}`
-    ],
+    experience: [currentPosition, ...previousPositions],
     education: [
       `${getRandomElement(['BS', 'MS', 'PhD'])} ${getRandomElement(['Computer Science', 'Engineering', 'Business', 'Mathematics', 'Physics'])} - ${getRandomElement(universities)}`,
       `${getRandomElement(['BS', 'BA'])} ${getRandomElement(['Computer Science', 'Engineering', 'Business', 'Mathematics', 'Physics'])} - ${getRandomElement(universities)}`
     ],
     skills: getRandomElements(skills, Math.floor(Math.random() * 8) + 3),
-    connections: Math.floor(Math.random() * 5000) + 500
+    connections: Math.floor(Math.random() * 5000) + 500,
+    yearsOfExperience,
+    currentPosition,
+    previousPositions,
+    summary
   };
 }
 
